@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Portfolio Manager</title>
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png">
+    <link rel="shortcut icon" type="image/png" href="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png">
+    <link href="/styles.css" rel="stylesheet">
+    <script src="/main-page-script.js" defer></script>
+</head>
+<body>
+
+    <header class="main-header container">
+        <a href="/" class="logo">
+            <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" alt="Logo">
+            Crypto Portfolio Manager
+        </a>
+        <nav class="main-nav">
+            <a href="/" class="active">Home</a>
+            <a href="/statistics">Portfolio Statistics</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="page-header">
+            <h1>Manage Your Portfolio</h1>
+            <p>Add your cryptocurrency wallet addresses below to start tracking your portfolio.</p>
+        </section>
+
+        <div id="status-message" class="status-message"></div>
+
+        <section class="crypto-grid">
+            <!-- Bitcoin Card -->
+            <div class="crypto-card">
+                <div class="crypto-card-header">
+                    <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" alt="Bitcoin Logo">
+                    <h2>Bitcoin (BTC)</h2>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="BTC" class="address-input" placeholder="Enter Bitcoin address">
+                    <button class="btn" onclick="addAddress('BTC')">Add</button>
+                </div>
+                <h4 class="address-list-header">Added Addresses</h4>
+                <ul class="address-list" id="bitcoinAddresses">
+                    <!-- Addresses will be dynamically inserted here -->
+                </ul>
+            </div>
+
+            <!-- Ethereum Card -->
+            <div class="crypto-card">
+                <div class="crypto-card-header">
+                    <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" alt="Ethereum Logo">
+                    <h2>Ethereum (ETH)</h2>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="ETH" class="address-input" placeholder="Enter Ethereum address">
+                    <button class="btn" onclick="addAddress('ETH')">Add</button>
+                </div>
+                <h4 class="address-list-header">Added Addresses</h4>
+                <ul class="address-list" id="ethereumAddresses">
+                    <!-- Addresses will be dynamically inserted here -->
+                </ul>
+            </div>
+
+            <!-- Litecoin Card -->
+            <div class="crypto-card">
+                <div class="crypto-card-header">
+                    <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/ltc.png" alt="Litecoin Logo">
+                    <h2>Litecoin (LTC)</h2>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="LTC" class="address-input" placeholder="Enter Litecoin address">
+                    <button class="btn" onclick="addAddress('LTC')">Add</button>
+                </div>
+                <h4 class="address-list-header">Added Addresses</h4>
+                <ul class="address-list" id="litecoinAddresses">
+                    <!-- Addresses will be dynamically inserted here -->
+                </ul>
+            </div>
+        </section>
+
+        <footer class="footer-actions">
+            <button class="btn clear-button" onclick="clearAllAddresses()">Clear All Addresses</button>
+        </footer>
+
+    </main>
+
+</body>
+</html>
