@@ -215,6 +215,11 @@ async function retrieveBitcoinData() {
       // Fetch data from API and convert to JSON
       const response = await fetch(`/api/dashboard/bitcoin/${bitcoinAddresses[i]}`);
       const data = await response.json();
+      // Check if data structure exists
+      if (!data || !data.data) {
+        console.log(`No data returned for Bitcoin address: ${bitcoinAddresses[i]}`);
+        continue;
+      }
       // Dynamically get address as key to ensure it is accessible
       // If we simply use bitcoinAddresses[i], it may fail sometimes
       const addressKey = Object.keys(data.data)[0];
@@ -245,6 +250,11 @@ async function retrieveEthereumData() {
       // Get data from API and convert to JSON
       const response = await fetch(`/api/dashboard/ethereum/${ethereumAddresses[i]}`);
       const data = await response.json();
+      // Check if data structure exists
+      if (!data || !data.data) {
+        console.log(`No data returned for Ethereum address: ${ethereumAddresses[i]}`);
+        continue;
+      }
       // Dynamically get address key to ensure it is accessible. Error may happen otherwise
       const addressKey = Object.keys(data.data)[0];
       // Update ethereum balances by adding address's balances.
@@ -334,6 +344,11 @@ async function retrieveLitecoinData() {
       // Fetch API response and convert to JSON
       const response = await fetch(`/api/dashboard/litecoin/${litecoinAddresses[i]}`);
       const data = await response.json();
+      // Check if data structure exists
+      if (!data || !data.data) {
+        console.log(`No data returned for Litecoin address: ${litecoinAddresses[i]}`);
+        continue;
+      }
       // Dynamically get address key
       const addressKey = Object.keys(data.data)[0];
       // Update litecoin balances
@@ -1142,6 +1157,24 @@ let longTermCapitalGains = 0
 let shortTermCapitalGainsTaxRate = 0.25
 let longTermCapitalGainTaxRate = 0.1
 
+// Function to get the short-term capital gains tax rate for 2025 (same as ordinary income)
+function getShortTermTaxRate(income) {
+    if (income <= 11925) return 0.10;
+    if (income <= 48475) return 0.12;
+    if (income <= 103350) return 0.22;
+    if (income <= 197300) return 0.24;
+    if (income <= 250525) return 0.32;
+    if (income <= 626350) return 0.35;
+    return 0.37;
+}
+
+// Function to get the long-term capital gains tax rate for 2025
+function getLongTermTaxRate(income) {
+    if (income <= 49230) return 0.00;
+    if (income <= 541450) return 0.15;
+    return 0.20;
+}
+
 // Declare transactions in tax format and sales array
 let transactionsTaxFormat
 let sales = []
@@ -1228,6 +1261,24 @@ function calculateTerm(buyDate, sellDate) {
   return new Date(sellDate) - new Date(buyDate) >= 31536000000 ? "LONG" : "SHORT"
 }
 
+// Function to populate the tax statistics section
+function populateTaxStatistics() {
+  const incomeInput = document.getElementById('income-input');
+  const income = parseFloat(incomeInput.value) || 0;
+
+  shortTermCapitalGainsTaxRate = getShortTermTaxRate(income + shortTermCapitalGains);
+  longTermCapitalGainTaxRate = getLongTermTaxRate(income + longTermCapitalGains);
+
+  document.getElementById('short-term-gains').textContent = `$${shortTermCapitalGains.toFixed(2)}`;
+  document.getElementById('long-term-gains').textContent = `$${longTermCapitalGains.toFixed(2)}`;
+  
+  const estimatedShortTermTax = shortTermCapitalGains * shortTermCapitalGainsTaxRate;
+  const estimatedLongTermTax = longTermCapitalGains * longTermCapitalGainTaxRate;
+  
+  document.getElementById('short-term-tax').textContent = `$${estimatedShortTermTax.toFixed(2)}`;
+  document.getElementById('long-term-tax').textContent = `$${estimatedLongTermTax.toFixed(2)}`;
+}
+
 // Main initialization function
 async function initializeApp() {
   try {
@@ -1267,9 +1318,16 @@ async function initializeApp() {
     await sortTransactions();
     populateTransactionTable();
     await calculateCapitalGains();
+    populateTaxStatistics();
     
     // Setup event listeners
     setupEventListeners();
+
+    // Add event listener for income input
+    const incomeInput = document.getElementById('income-input');
+    if (incomeInput) {
+        incomeInput.addEventListener('input', populateTaxStatistics);
+    }
     
     // Hide loading message and show content
     document.getElementById('loader').style.display = 'none';

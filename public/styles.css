@@ -743,3 +743,34 @@ h1, h2, h3, .main-header .logo {
     grid-column: span 2;
 }
 
+/* Tax Statistics */
+.tax-statistics {
+    margin-bottom: 3rem;
+}
+
+.tax-statistics h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.income-input-section {
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    text-align: center;
+}
+
+.income-input-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.tax-statistics .disclaimer {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 1.5rem;
+    text-align: center;
+    font-style: italic;
+}
+
